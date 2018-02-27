@@ -2,12 +2,12 @@
 
 angular.module('dropOff.login', ['ngRoute', 'firebase'])
 
-.config(['$routeProvider', function($routeProvider){
-	$routeProvider.when('/login', {
-		templateUrl: 'login/login.html',
-		controller: 'LoginCtrl'
-	});
-}])
+// .config(['$routeProvider', function($routeProvider){
+// 	$routeProvider.when('/login', {
+// 		templateUrl: 'login/login.html',
+// 		controller: 'LoginCtrl'
+// 	});
+// }])
 
 .controller('LoginCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', function($scope, $firebaseAuth, $location, CommonProp){
 
@@ -34,9 +34,10 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 
 }])
 
-.service('CommonProp', ['$location', '$firebaseAuth', function($location, $firebaseAuth){
+.service('CommonProp', ['$location', '$firebaseAuth', '$firebaseObject', function($location, $firebaseAuth, $firebaseObject){
 	var user = "";
 	var UID = "";
+	var permission = "";
 	var auth = $firebaseAuth();
 
 	return {
@@ -52,7 +53,16 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			}
 			return UID;
 		},
+		getPermission: function(){
+			if(permission == ""){
+				// TODO: change this to actually work
+				// permission = localStorage.getItem('permission');
+				permission = "driver";
+			}
+			return permission;
+		},
 		setUser: function(loggedInUser){
+			// TODO: Save the permission as well when login
 			localStorage.setItem('userEmail', loggedInUser.email);
 			localStorage.setItem('uid', loggedInUser.uid);
 			user = loggedInUser.email;
@@ -64,7 +74,12 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			user = "";
 			localStorage.removeItem('userEmail');
 			localStorage.removeItem('uid');
+			localStorage.removeItem('isDriver');
 			$location.path('/home');
+		},
+		userHasPermission: function(layoutPermission){
+			console.log(layoutPermission);
+			return this.permission() == layoutPermission;
 		}
 	};
 }]);
