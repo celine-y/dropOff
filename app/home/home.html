@@ -10,7 +10,7 @@
                     <a href="#" class="navbar-brand">dropOff</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#/home">Home</a></li>
+                    <li class="active"><a href="#!/home">Home</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
             </div>
@@ -25,7 +25,11 @@
         </div>
 
         <div ng-show="{{userType == 'driver'}}" class="container">
-            <h3 class="text-center">Driver</h3>
+            <h3 class="text-center">Upcoming Drives</h3>
+            <a class="btn btn-success" href="#!/makeTrip">Post New Trip</a>
+            <div class="container">
+                Upcoming drives display
+            </div>
         </div>
     </body>
 </html>

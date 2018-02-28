@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>dropOff | New trip</title>
+    </head>
+    <body ng-controller="makeTripCtrl">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand">dropOff</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#!/home">Home</a></li>
+                    <li ng-click="logout()"><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container" ng-show="success">
+            <div class="row">
+                <div class="alert alert-success">
+                    <strong>Success!</strong> The trip has beed posted.
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3 class="text-center">Create New Trip</h3>
+            <form name="tripForm" novalidate>
+                <div class="form-row">
+                    <div class="col">
+                        <h2>Location</h2>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md">
+                        <label for="startLoc">Departure</label>
+                        <select id="startLoc" class="form-control" ng-model="trip.startLoc"
+                            ng-options="location.$id as location.name for location in locations">
+                            <option value="" disabled selected>Select Departure</option>
+                        </select>
+                    </div>
+                    <div class="col-md">
+                        <label for="endLoc">Arrival</label>
+                        <select id="endLoc" class="form-control" ng-model="trip.endLoc"
+                            ng-options="location.$id as location.name for location in locations">
+                            <option value="" disabled selected>Select Arrival</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md">
+                        <label for="departTime">Departure Time</label>
+                        <select id="departTime" class="form-control" ng-model="trip.departTime"
+                            ng-options="time.$id as time.description for time in times">
+                            <option value="" disabled selected>Select Time</option>
+                        </select>
+                    </div>
+                    <div class="col-md">
+                        <label for="price">Price per Seat</label>
+                        <input name="price" class="form-control" placeholder="15" ng-model="trip.price"></input>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-xs">
+                        <label for="selectSeat">Select Available Seats</label>
+                        <div id="selectSeat">
+                            <table class="table">
+                                <tbody class="table">
+                                    <tr ng-repeat="row in seats">
+                                    <!-- <span>{{rowLetter[$index]}}</span> -->
+                                    <td ng-repeat="item in row">
+                                        <a class="available" ng-disabled="isDisabled" ng-class="{'selected': item.isAvailable == true,'available': item.isAvailable == false, 'blocked': item.isSeat == false}" ng-click="clickSeat(item)">{{item.col}}</a>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <button type="submit" ng-click="createTrip()" class="btn btn-success">Create Trip</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+    <!-- <script type="text/javascript" src="https://raw.githubusercontent.com/ShadAhm/angular.keruC/master/angular.keruc.js"></script> -->
+</html>

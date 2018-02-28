@@ -14,8 +14,11 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/angular-ui-select/dist/select.min.css">
 
-  <link rel="stylesheet" href="app.css">
+
+  <link rel="stylesheet" href="/style/app.css">
+  <link rel="stylesheet" href="/style/seat.css">
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
   
   <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
@@ -43,16 +46,30 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+
+    <!--[if lt IE 9]>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.js"></script>
+    <script>
+      document.createElement('ui-select');
+      document.createElement('ui-select-match');
+      document.createElement('ui-select-choices');
+    </script>
+  <![endif]-->
+
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
   <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script type="text/javascript" src="bower_components/angularfire/dist/angularfire.js"></script>
+  <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-ui-select/dist/select.min.js"></script>
 
   <script type="text/javascript" src="app.js"></script>
   <script type="text/javascript" src="home/home.js"></script>
   <script type="text/javascript" src="login/login.js"></script>
   <script type="text/javascript" src="register/register.js"></script>
+  <script type="text/javascript" src="driver/makeTrip/makeTrip.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
