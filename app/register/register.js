@@ -2,13 +2,6 @@
 
 angular.module('dropOff.register', ['ngRoute', 'firebase'])
 
-// .config(['$routeProvider', function($routeProvider){
-// 	$routeProvider.when('/register', {
-// 		templateUrl: 'register/register.html',
-// 		controller: 'RegisterCtrl'
-// 	});
-// }])
-
 .controller('RegisterCtrl', ['$scope', 'CommonProp', '$firebaseAuth', '$location', 'LoginFactory', function($scope, CommonProp, $firebaseAuth, $location, LoginFactory){
 	// TODO: set default value to rider
 

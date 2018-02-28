@@ -2,13 +2,6 @@
 
 angular.module('dropOff.login', ['ngRoute', 'firebase'])
 
-// .config(['$routeProvider', function($routeProvider){
-// 	$routeProvider.when('/login', {
-// 		templateUrl: 'login/login.html',
-// 		controller: 'LoginCtrl'
-// 	});
-// }])
-
 .controller('LoginCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', 'LoginFactory', function($scope, $firebaseAuth, $location, CommonProp, LoginFactory){
 
 	$scope.username = CommonProp.getUser();
@@ -40,8 +33,11 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			auth.$signInWithEmailAndPassword(username, password)
 			.then(function(response){
 				console.log("Login: success");
-				$location.path('/home');
 				CommonProp.setUser(response);
+				CommonProp.setPermission(response.uid)
+				.then(function(){
+					$location.path('/home');
+				});
 				defered.resolve(response);
 			})
 			.catch(function(err){
@@ -52,7 +48,7 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 	}
 }])
 
-.service('CommonProp', ['$location', '$firebaseAuth', '$firebaseObject', function($location, $firebaseAuth, $firebaseObject){
+.service('CommonProp', ['$location', '$firebaseAuth', '$firebaseObject', '$q', function($location, $firebaseAuth, $firebaseObject, $q){
 	var user = "";
 	var UID = "";
 	var permission = "";
@@ -71,18 +67,25 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			}
 			return UID;
 		},
+		setPermission: function(uid){
+			var defer = $q.defer();
+
+			var ref = firebase.database().ref().child('users').child(uid);
+			$firebaseObject(ref).$loaded()
+			.then(function(ref){
+				localStorage.setItem('permission', ref.permission);
+				permission = ref.permission;
+				defer.resolve(permission);
+			})
+			.catch(function(err){
+				defer.reject(err);
+			});
+
+			return defer.promise;
+		},
 		getPermission: function(){
-			// console.log(permission);
 			if(permission == ""){
-				if (!localStorage.getItem('permission')) {
-					var ref = firebase.database().ref().child('users').child(this.getUID());
-					var firebaseUser = $firebaseObject(ref);
-					console.log(firebaseUser);
-					console.log(firebaseUser.permission);
-					localStorage.setItem('permission', firebaseUser.permission);
-				}
-				console.log(localStorage.getItem('permission'));
-				// permission = "driver";
+				permission = localStorage.getItem('permission');
 			}
 			return permission;
 		},
@@ -96,6 +99,8 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			auth.$signOut();
 			console.log("Logged Out Succesfully");
 			user = "";
+			UID = "";
+			permission = "";
 			localStorage.removeItem('userEmail');
 			localStorage.removeItem('uid');
 			localStorage.removeItem('permission');
