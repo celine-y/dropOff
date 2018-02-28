@@ -9,7 +9,7 @@ angular.module('dropOff.register', ['ngRoute', 'firebase'])
 // 	});
 // }])
 
-.controller('RegisterCtrl', ['$scope', 'CommonProp', '$firebaseAuth', '$location', function($scope, CommonProp, $firebaseAuth, $location){
+.controller('RegisterCtrl', ['$scope', 'CommonProp', '$firebaseAuth', '$location', 'LoginFactory', function($scope, CommonProp, $firebaseAuth, $location, LoginFactory){
 	// TODO: set default value to rider
 
 	$scope.signUp = function(){
@@ -25,14 +25,12 @@ angular.module('dropOff.register', ['ngRoute', 'firebase'])
 					email: $scope.user.email,
 					permission: $scope.user.type
 				}
-				ref.child(user.uid).set(data).then(function(ref) {//use 'child' and 'set' combination to save data in your own generated key
-					console.log("New user created");
-					// TODO: refactor so that code isn't repeated from login.js
-					auth.$signInWithEmailAndPassword(username, password).then(function(response){
-						console.log("User Login Successful");
-						CommonProp.setUser(response);
-						$location.path('/home');
-					}).catch(function(error){
+				// save user to own database so additional data can be saved
+				ref.child(user.uid).set(data).then(function(ref) {
+					console.log("Success: new user created");
+					// signin new user
+					LoginFactory.signIn(username, password)
+					.catch(function(error){
 						$scope.errMsg = true;
 						$scope.errorMessage = error.message;
 					});

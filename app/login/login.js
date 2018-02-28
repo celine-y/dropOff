@@ -9,7 +9,7 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 // 	});
 // }])
 
-.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', function($scope, $firebaseAuth, $location, CommonProp){
+.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', 'LoginFactory', function($scope, $firebaseAuth, $location, CommonProp, LoginFactory){
 
 	$scope.username = CommonProp.getUser();
 
@@ -22,16 +22,34 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 		var password = $scope.user.password;
 		var auth = $firebaseAuth();
 
-		auth.$signInWithEmailAndPassword(username, password).then(function(response){
-			console.log("User Login Successful");
-			CommonProp.setUser(response);
-			$location.path('/home');
-		}).catch(function(error){
+		LoginFactory.signIn(username, password)
+		.catch(function(error){
 			$scope.errMsg = true;
 			$scope.errorMessage = error.message;
 		});
 	}
 
+}])
+
+.factory('LoginFactory', ['$location', 'CommonProp', '$firebaseAuth', '$q', '$firebaseObject', function($location, CommonProp, $firebaseAuth, $q, $firebaseObject){
+	var auth = $firebaseAuth();
+
+	return {
+		signIn: function(username, password){
+			var defered = $q.defer();
+			auth.$signInWithEmailAndPassword(username, password)
+			.then(function(response){
+				console.log("Login: success");
+				$location.path('/home');
+				CommonProp.setUser(response);
+				defered.resolve(response);
+			})
+			.catch(function(err){
+				defered.reject(err);
+			});
+			return defered.promise;
+		}
+	}
 }])
 
 .service('CommonProp', ['$location', '$firebaseAuth', '$firebaseObject', function($location, $firebaseAuth, $firebaseObject){
@@ -54,15 +72,21 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			return UID;
 		},
 		getPermission: function(){
+			// console.log(permission);
 			if(permission == ""){
-				// TODO: change this to actually work
-				// permission = localStorage.getItem('permission');
-				permission = "driver";
+				if (!localStorage.getItem('permission')) {
+					var ref = firebase.database().ref().child('users').child(this.getUID());
+					var firebaseUser = $firebaseObject(ref);
+					console.log(firebaseUser);
+					console.log(firebaseUser.permission);
+					localStorage.setItem('permission', firebaseUser.permission);
+				}
+				console.log(localStorage.getItem('permission'));
+				// permission = "driver";
 			}
 			return permission;
 		},
 		setUser: function(loggedInUser){
-			// TODO: Save the permission as well when login
 			localStorage.setItem('userEmail', loggedInUser.email);
 			localStorage.setItem('uid', loggedInUser.uid);
 			user = loggedInUser.email;
@@ -74,12 +98,8 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 			user = "";
 			localStorage.removeItem('userEmail');
 			localStorage.removeItem('uid');
-			localStorage.removeItem('isDriver');
+			localStorage.removeItem('permission');
 			$location.path('/home');
-		},
-		userHasPermission: function(layoutPermission){
-			console.log(layoutPermission);
-			return this.permission() == layoutPermission;
 		}
 	};
 }]);
