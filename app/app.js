@@ -6,11 +6,23 @@ angular.module('dropOff', [
   'dropOff.login',
   'dropOff.register',
   'dropOff.home',
-  'dropOff.view1',
-  'dropOff.view2',
   'dropOff.version'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+])
+.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
 
-  $routeProvider.otherwise({redirectTo: '/login'});
+  $routeProvider
+  .when('/home',{
+		templateUrl: 'home/home.html',
+    controller: 'HomeCtrl',
+    permissions: ['driver', 'rider']
+  })
+  .when('/login', {
+		templateUrl: 'login/login.html',
+		controller: 'LoginCtrl'
+  })
+  .when('/register', {
+		templateUrl: 'register/register.html',
+		controller: 'RegisterCtrl'
+  })
+  .otherwise({redirectTo: '/login'});
 }]);
