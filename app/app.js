@@ -6,15 +6,15 @@ angular.module('dropOff', [
   'dropOff.login',
   'dropOff.register',
   'dropOff.home',
-  'dropOff.version'
+  'dropOff.makeTrip'
 ])
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+  $locationProvider.hashPrefix('!');
 
   $routeProvider
-  .when('/home',{
+  .when('/home', {
 		templateUrl: 'home/home.html',
-    controller: 'HomeCtrl',
-    permissions: ['driver', 'rider']
+    controller: 'HomeCtrl'
   })
   .when('/login', {
 		templateUrl: 'login/login.html',
@@ -23,6 +23,10 @@ angular.module('dropOff', [
   .when('/register', {
 		templateUrl: 'register/register.html',
 		controller: 'RegisterCtrl'
+  })
+  .when('/makeTrip', {
+    templateUrl: 'driver/makeTrip/makeTrip.html',
+    controller: 'makeTripCtrl'
   })
   .otherwise({redirectTo: '/login'});
 }]);
