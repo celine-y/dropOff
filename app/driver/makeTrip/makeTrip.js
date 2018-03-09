@@ -15,9 +15,6 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
     var locationRef = firebase.database().ref().child('locations');
     $scope.locations = $firebaseArray(locationRef);
 
-    var timeRef = firebase.database().ref().child('times');
-    $scope.times = $firebaseArray(timeRef);
-
     $scope.trip = {};
     var tripRef = firebase.database().ref().child('trips');
     $scope.trips = $firebaseArray(tripRef);
@@ -25,6 +22,7 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
     $scope.createTrip = function(){
       $scope.trip.seats = seatCalc.getTripSeats($scope.seats);
       $scope.trip.driver = CommonProp.getUID();
+      $scope.trip.datetime = new Date($scope.dateTime).valueOf();
 
       $scope.trips.$add(
         $scope.trip

@@ -25,10 +25,23 @@
         </div>
 
         <div ng-show="{{userType == 'driver'}}" class="container">
-            <h3 class="text-center">Upcoming Drives</h3>
-            <a class="btn btn-success" href="#!/makeTrip">Post New Trip</a>
+            <div class="container text-center">
+                <a class="btn btn-success" href="#!/makeTrip">Post New Trip</a>
+            </div>
             <div class="container">
-                Upcoming drives display
+                <h3 class="text-center">Upcoming Drives</h3>
+                <div ng-repeat="(id, trip) in dTrips | orderBy:'datetime' " class="list-group">
+                    <div class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ trip.startLoc }} to {{ trip.endLoc }}</h5>
+                            <small>{{ trip.datetime | date: 'MMM dd HH:mma' }}</small>
+                        </div>
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Spots left: </h6>
+                            <p>{{ trip.seatsLeft }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
