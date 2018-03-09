@@ -2,7 +2,8 @@
 
 angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 
-.controller('HomeCtrl', ['$scope', 'CommonProp', '$firebaseArray', '$firebaseObject', '$location', function($scope, CommonProp, $firebaseArray, $firebaseObject, $location){
+.controller('HomeCtrl', ['$scope', 'CommonProp', '$firebaseArray', '$firebaseObject', '$location', '$filter',
+ function($scope, CommonProp, $firebaseArray, $firebaseObject, $location, $filter){
 	$scope.username = CommonProp.getUser();
 	$scope.userType = CommonProp.getPermission();
 
@@ -12,7 +13,8 @@ angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 
 	if($scope.userType == "driver"){
 		var uid = CommonProp.getUID();
-		var today = new Date().setHours(0,0,0,0);
+		var today = moment().startOf('day');
+
 		var driverTripsRef = firebase.database().ref().child('trips').orderByChild('driver').equalTo(uid);
 		$scope.trips = $firebaseArray(driverTripsRef);
 		
@@ -21,24 +23,67 @@ angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 			$scope.dTrips = $scope.trips;
 			angular.forEach($scope.dTrips, function(trip, index){
 				// remove trips that are before today
-				if (trip.datetime < today.valueOf()){
+				var tripdate = moment(trip.datetime);
+				if (tripdate < today){
 					$scope.dTrips.splice(index, 1);
 				} else {
-					// count the number of seats left
-					var seatsLeft = 0;
-					angular.forEach(trip.seats, function(value, key){
-						if (!value.takenBy){
-							seatsLeft++;
-						}
-					});
-					trip['seatsLeft'] = seatsLeft;
+					trip['seatsLeft'] = getSeats(trip);
 				}
 			});
 		});
 	} else {
-
+		var locationRef = firebase.database().ref().child('locations');
+		$scope.locations = $firebaseArray(locationRef);
 	}
 
+	function getSeats(trip){
+		var seatsLeft = 0;
+		angular.forEach(trip.seats, function(value, key){
+			if (!value.takenBy){
+				seatsLeft++;
+			}
+		});
+		return seatsLeft;
+	}
+
+	function addTrip(trip){
+		var seatsLeft = getSeats(trip);
+		if (seatsLeft){
+			trip['seatsLeft'] = seatsLeft;
+			$scope.rTrips.push(trip);
+		}
+	}
+
+	$scope.searchTrip = function(){
+		var searchDateStart = moment($scope.search.datetime, 'MMM DD yyyy').startOf('day').valueOf();
+		var searchDateEnd = moment($scope.search.datetime, 'MMM DD yyyy').endOf('day').valueOf();
+
+		var tripRef = firebase.database().ref().child('trips')
+			.orderByChild('datetime')
+			.startAt(searchDateStart)
+			.endAt(searchDateEnd);
+		$scope.trips = $firebaseArray(tripRef);
+
+		$scope.trips.$loaded()
+		.then(function() {
+			var maxPrice = $scope.search.maxPrice;
+
+			$scope.rTrips = [];
+			angular.forEach($scope.trips, function(trip, index){
+				// look for trips that start/end in searched destinations
+				if (trip.startLoc === $scope.search.startLoc && trip.endLoc === $scope.search.endLoc){
+					if (maxPrice){
+						// remove trips with price greater than specified
+						if (trip.price <= maxPrice){
+							addTrip(trip);
+						}
+					} else {
+						addTrip(trip);
+					}
+				}
+			});
+		});
+	}
 
 	$scope.logout = function(){
 		CommonProp.logoutUser();
