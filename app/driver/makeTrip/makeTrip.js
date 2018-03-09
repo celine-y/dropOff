@@ -22,8 +22,8 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
     $scope.createTrip = function(){
       $scope.trip.seats = seatCalc.getTripSeats($scope.seats);
       $scope.trip.driver = CommonProp.getUID();
-      $scope.trip.datetime = new Date($scope.dateTime).valueOf();
 
+      $scope.trip.datetime = moment($scope.datetime, "MMM DD yyyy HH:mm").valueOf();
       $scope.trips.$add(
         $scope.trip
       ).then(function(ref){
