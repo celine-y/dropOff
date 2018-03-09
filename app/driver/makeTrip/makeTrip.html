@@ -36,29 +36,28 @@
                     <div class="col-md">
                         <label for="startLoc">Departure</label>
                         <select id="startLoc" class="form-control" ng-model="trip.startLoc"
-                            ng-options="location.$id as location.name for location in locations">
+                            ng-options="location.name as location.name for location in locations">
                             <option value="" disabled selected>Select Departure</option>
                         </select>
                     </div>
                     <div class="col-md">
                         <label for="endLoc">Arrival</label>
                         <select id="endLoc" class="form-control" ng-model="trip.endLoc"
-                            ng-options="location.$id as location.name for location in locations">
+                            ng-options="location.name as location.name for location in locations">
                             <option value="" disabled selected>Select Arrival</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md">
-                        <label for="departTime">Departure Time</label>
-                        <select id="departTime" class="form-control" ng-model="trip.departTime"
-                            ng-options="time.$id as time.description for time in times">
-                            <option value="" disabled selected>Select Time</option>
-                        </select>
+                        <label for="dateTime">Departure Time and Date</label>
+                        <input id="dateTime" ng-model="dateTime" datetime-picker future-only/>
                     </div>
-                    <div class="col-md">
+                </div>
+                <div class="form-row">
+                    <div class="col">
                         <label for="price">Price per Seat</label>
-                        <input name="price" class="form-control" placeholder="15" ng-model="trip.price"></input>
+                        <input name="price" class="form-control" placeholder="15" ng-model="trip.price"></input>    
                     </div>
                 </div>
                 <div class="form-row">
