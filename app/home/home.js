@@ -49,15 +49,28 @@ angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 	function addTrip(trip){
 		var seatsLeft = getSeats(trip);
 		if (seatsLeft){
-			trip['seatsLeft'] = seatsLeft;
-			$scope.rTrips.push(trip);
+			// find the driver profile
+			var driverProfileRef = firebase.database().ref()
+			.child('drivers')
+			.child(trip.driver);
+			
+			var driver = $firebaseObject(driverProfileRef);
+			driver.$loaded().then(function(){
+				trip['driver'] = {
+					color: "#"+driver.color,
+					brand: driver.brand
+				};
+				trip['seatsLeft'] = seatsLeft;
+				// add trip into list
+				$scope.rTrips.push(trip);
+			});
 		}
 	}
 
 	$scope.searchTrip = function(){
 		var searchDateStart = moment($scope.search.datetime, 'MMM DD yyyy').startOf('day').valueOf();
 		var searchDateEnd = moment($scope.search.datetime, 'MMM DD yyyy').endOf('day').valueOf();
-
+		
 		var tripRef = firebase.database().ref().child('trips')
 			.orderByChild('datetime')
 			.startAt(searchDateStart)
@@ -88,8 +101,4 @@ angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 	$scope.logout = function(){
 		CommonProp.logoutUser();
 	};
-
-	$scope.newTrip = function(){
-		$location.path('/makeTrip');
-	}
 }])

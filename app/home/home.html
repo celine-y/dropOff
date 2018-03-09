@@ -11,6 +11,7 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#!/home">Home</a></li>
+                    <li ng-show="{{userType == 'driver'}}"><a href="#!/driver">Profile</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
             </div>
@@ -69,10 +70,18 @@
                         <a href="/bookTrip/{{trip.$id}}" class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="row">
                                 <div class="col-6">
-                                    <h5>{{ trip.startLoc }} to {{ trip.endLoc }}</h5>
+                                    <h5>{{ trip.datetime | date: 'MMM dd HH:mm' }}</h5>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <small>{{ trip.datetime | date: 'MMM dd HH:mm' }}</small>
+                                    <small>{{ trip.startLoc }} to {{ trip.endLoc }}</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span>
+                                        <i class="fas fa-car fa-fw" ng-style="{'color': trip.driver.color}"></i>
+                                    </span>
+                                    {{ trip.driver.brand }}
                                 </div>
                             </div>
                             <div class="row">
