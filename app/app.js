@@ -6,7 +6,8 @@ angular.module('dropOff', [
   'dropOff.login',
   'dropOff.register',
   'dropOff.home',
-  'dropOff.makeTrip'
+  'dropOff.makeTrip',
+  'dropOff.driver'
 ])
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
@@ -27,6 +28,10 @@ angular.module('dropOff', [
   .when('/makeTrip', {
     templateUrl: 'driver/makeTrip/makeTrip.html',
     controller: 'makeTripCtrl'
+  })
+  .when('/driver', {
+    templateUrl: 'driver/driver.html',
+    controller: 'driverCtrl'
   })
   .otherwise({redirectTo: '/login'});
 }]);
