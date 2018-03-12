@@ -55,7 +55,6 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.sel
     }
 
     function findLocation(location){
-      console.log(location);
       var defered = $q.defer();
 
       locationRef.orderByChild("name").equalTo(location).once("value")
