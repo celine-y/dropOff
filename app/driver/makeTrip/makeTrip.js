@@ -2,8 +2,9 @@
 
 angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.select'])
 
-.controller('makeTripCtrl', ['$scope', 'CommonProp', '$location', '$firebaseArray', 'seatCalc', '$firebaseObject',
- function($scope, CommonProp, $location, $firebaseArray, seatCalc, $firebaseObject){
+.controller('makeTripCtrl', ['$scope', 'CommonProp', '$location', '$firebaseArray',
+ 'seatCalc', '$firebaseObject', '$q',
+ function($scope, CommonProp, $location, $firebaseArray, seatCalc, $firebaseObject, $q){
     $scope.username = CommonProp.getUser();
     $scope.userType = CommonProp.getPermission();
     $scope.success = false;
@@ -44,46 +45,35 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.sel
       $scope.trips.$add(
         $scope.trip
       ).then(function(ref){
-        var startSuccess = findLocation($scope.trip.startLoc);
-        var endSuccess = findLocation($scope.trip.endLoc);
-
-        if (startSuccess && endSuccess){
-          console.log('In if');
+        $q.all([
+          findLocation($scope.trip.startLoc),
+          findLocation($scope.trip.endLoc)
+        ]).then(function(success){
           showSuccess();
-        }
-      }, function(error){
-        console.log(error);
-      });
+        });
+      })
     }
 
     function findLocation(location){
       console.log(location);
+      var defered = $q.defer();
+
       locationRef.orderByChild("name").equalTo(location).once("value")
       .then(function(snapshot){
-        var addLocSucc = addLocation(snapshot, location);
-        console.log(addLocSucc);
-        return addLocSucc;
+        var isLocation = snapshot.exists();
+
+        if(!isLocation){
+          $scope.locations.$add({
+            name: location
+          }).then(function(success){
+            defered.resolve(success);
+          }, function(error){
+            console.log(error);
+            defered.reject(error);
+          });
+          return defered.promise;
+        }
       });
-    }
-
-    function addLocation(snapshot, location){
-      var isLocation = snapshot.exists();
-
-      if (!isLocation){
-        $scope.locations.$add({
-          name: location
-        })
-        .then(function(success){
-          console.log(success);
-          return true;
-        }, function(error){
-          console.log(error);
-          return false;
-        });
-      } else {
-        console.log("isLocation");
-        return true;
-      }
     }
 
     function showSuccess(){
