@@ -24,8 +24,8 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.sel
     var locationRef = firebase.database().ref().child('locations');
     $scope.locations = $firebaseArray(locationRef);
 
+    // Transform the custon location entry
     $scope.tagTransform = function(newTag){
-      console.log(newTag);
       var item = {
         name: newTag
       };
@@ -44,10 +44,46 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.sel
       $scope.trips.$add(
         $scope.trip
       ).then(function(ref){
-        showSuccess();
+        var startSuccess = findLocation($scope.trip.startLoc);
+        var endSuccess = findLocation($scope.trip.endLoc);
+
+        if (startSuccess && endSuccess){
+          console.log('In if');
+          showSuccess();
+        }
       }, function(error){
         console.log(error);
       });
+    }
+
+    function findLocation(location){
+      console.log(location);
+      locationRef.orderByChild("name").equalTo(location).once("value")
+      .then(function(snapshot){
+        var addLocSucc = addLocation(snapshot, location);
+        console.log(addLocSucc);
+        return addLocSucc;
+      });
+    }
+
+    function addLocation(snapshot, location){
+      var isLocation = snapshot.exists();
+
+      if (!isLocation){
+        $scope.locations.$add({
+          name: location
+        })
+        .then(function(success){
+          console.log(success);
+          return true;
+        }, function(error){
+          console.log(error);
+          return false;
+        });
+      } else {
+        console.log("isLocation");
+        return true;
+      }
     }
 
     function showSuccess(){
@@ -58,28 +94,6 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.sel
 				});
 			}, 2000);
     }
-
-    // *********** SKETCHY WAY OF ADDING DATA FOR NOW
-    // var locations = ["Waterloo", "London", "Kingston"];
-
-    // for(var i = 0; i < locations.length; i++){
-    //     $scope.locations.$add({
-    //         name: locations[i]
-    //     }
-    //     ).then(function(ref){
-    //         console.log(ref);
-    //     }, function(error){
-    //         console.log(error);
-    //     });
-    // }
-
-    // var times = ["Early Morning", "Mid-morning", "Afternoon", "Evening", "Late Night"];
-    // for(var i = 0; i < times.length; i++){
-    //     $scope.times.$add({
-    //         description: times[i]
-    //     });
-    // }
-    // ***********************END SKETCHY
     
     $scope.obj = [
       [{
