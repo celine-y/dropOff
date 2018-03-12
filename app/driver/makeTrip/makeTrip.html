@@ -47,27 +47,41 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md">
+                    <!-- <div class="col-md">
                         <label for="startLoc">Departure</label>
                         <select id="startLoc" class="form-control" ng-model="trip.startLoc" required
                             ng-options="location.name as location.name for location in locations">
                             <option value="" disabled selected>Select Departure</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="col-md">
+                        <label for="startLoc">Departure</label>
+                        <ui-select id="startLoc" ng-model="trip.startLoc" tagging="tagTransform" tagging-label="false" 
+                            required theme="bootstrap">
+                            <ui-select-match placeholder="Select Arrival Location or Type Your Own">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
+                                <div ng-bind-html="location.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <small>After typing your own location, hit ENTER or TAB</small>
+                    </div>
+                    <!-- <div class="col-md">
                         <label for="endLoc">Arrival</label>
                         <select id="endLoc" class="form-control" ng-model="trip.endLoc" required
                             ng-options="location.name as location.name for location in locations">
                             <option value="" disabled selected>Select Arrival</option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="col-md">
-                        <ui-select ng-model="trip.starting" tagging="tagTransform" tagging-label="false" theme="bootstrap">
-                            <ui-select-match>{{$select.selected.name}}</ui-select-match>
-                            <ui-select-choices repeat="location in locations | filter: $select.search">
+                        <label for="endLoc">Arrival</label>
+                        <ui-select id="endLoc" ng-model="trip.endLoc" tagging="tagTransform" tagging-label="false" 
+                            required theme="bootstrap">
+                            <ui-select-match placeholder="Select Arrival Location or Type Your Own">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
                                 <div ng-bind-html="location.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
+                        <small>After typing your own location, hit ENTER or TAB</small>
                     </div>
                 </div>
                 <div class="form-row">
