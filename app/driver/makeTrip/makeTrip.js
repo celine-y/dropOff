@@ -7,10 +7,19 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
     $scope.username = CommonProp.getUser();
     $scope.userType = CommonProp.getPermission();
     $scope.success = false;
+    $scope.hasProfile = true;
 
     if(!$scope.username && $scope.userType != "driver"){
         $location.path('/login');
     }
+
+    var uid = CommonProp.getUID();
+    var driverRef = firebase.database().ref('drivers');
+    driverRef.once("value")
+    .then(function(snapshot) {
+      $scope.hasProfile = snapshot.hasChild(uid); // true
+    });
+
 
     var locationRef = firebase.database().ref().child('locations');
     $scope.locations = $firebaseArray(locationRef);
