@@ -10,8 +10,9 @@
                     <a href="#" class="navbar-brand">dropOff</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#!/home">Home</a></li>
-                    <li ng-show="{{userType == 'driver'}}"><a href="#!/driver">Profile</a></li>
+                    <li><a href="#!/home">Home</a></li>
+                    <li ng-show="{{userType == 'driver'}}"><a href="#!/makeTrip">Create Trip</a></li>
+                    <li ng-show="{{userType == 'driver'}}" class="active"><a href="#!/driver">Profile</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
             </div>
@@ -56,35 +57,39 @@
             <h4 class="text-center">Example View</h4>
             <div class="list-group">
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5>Dec 24 2020 23:59</h5>
-                        </div>
-                        <div class="col-6 text-right">
-                            <small>Earth to Moon</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <span>
-                                <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
-                            </span>
-                            {{ driver.brand }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="text-success">
-                                <h5 class="text-left">$25</h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h4>Dec 24 2020 23:59</h4>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <small>Earth to Moon</small>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-6">
-                                    <h6>Spots left: </h6>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>
+                                    <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
+                                </span>
+                                {{ driver.brand }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="text-success">
+                                    <h5 class="text-left">$25</h5>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <span class="badge badge-primary badge-pill">3</span>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <h6>Spots left: </h6>
+                                        </div>
+                                        <div class="col-xs-6 text-right">
+                                            <span class="badge badge-primary badge-pill">3</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

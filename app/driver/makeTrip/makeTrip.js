@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
+angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.select'])
 
-.controller('makeTripCtrl', ['$scope', 'CommonProp', '$location', '$firebaseArray', 'seatCalc', '$firebaseObject',
- function($scope, CommonProp, $location, $firebaseArray, seatCalc, $firebaseObject){
+.controller('makeTripCtrl', ['$scope', 'CommonProp', '$location', '$firebaseArray',
+ 'seatCalc', '$firebaseObject', '$q',
+ function($scope, CommonProp, $location, $firebaseArray, seatCalc, $firebaseObject, $q){
     $scope.username = CommonProp.getUser();
     $scope.userType = CommonProp.getPermission();
     $scope.success = false;
@@ -24,6 +25,14 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
     var locationRef = firebase.database().ref().child('locations');
     $scope.locations = $firebaseArray(locationRef);
 
+    // Transform the custon location entry
+    $scope.tagTransform = function(newTag){
+      var item = {
+        name: newTag
+      };
+      return item;
+    }
+
     $scope.trip = {};
     var tripRef = firebase.database().ref().child('trips');
     $scope.trips = $firebaseArray(tripRef);
@@ -36,9 +45,33 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
       $scope.trips.$add(
         $scope.trip
       ).then(function(ref){
-        showSuccess();
-      }, function(error){
-        console.log(error);
+        $q.all([
+          findLocation($scope.trip.startLoc),
+          findLocation($scope.trip.endLoc)
+        ]).then(function(success){
+          showSuccess();
+        });
+      })
+    }
+
+    function findLocation(location){
+      var defered = $q.defer();
+
+      locationRef.orderByChild("name").equalTo(location).once("value")
+      .then(function(snapshot){
+        var isLocation = snapshot.exists();
+
+        if(!isLocation){
+          $scope.locations.$add({
+            name: location
+          }).then(function(success){
+            defered.resolve(success);
+          }, function(error){
+            console.log(error);
+            defered.reject(error);
+          });
+          return defered.promise;
+        }
       });
     }
 
@@ -50,28 +83,6 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
 				});
 			}, 2000);
     }
-
-    // *********** SKETCHY WAY OF ADDING DATA FOR NOW
-    // var locations = ["Waterloo", "London", "Kingston"];
-
-    // for(var i = 0; i < locations.length; i++){
-    //     $scope.locations.$add({
-    //         name: locations[i]
-    //     }
-    //     ).then(function(ref){
-    //         console.log(ref);
-    //     }, function(error){
-    //         console.log(error);
-    //     });
-    // }
-
-    // var times = ["Early Morning", "Mid-morning", "Afternoon", "Evening", "Late Night"];
-    // for(var i = 0; i < times.length; i++){
-    //     $scope.times.$add({
-    //         description: times[i]
-    //     });
-    // }
-    // ***********************END SKETCHY
     
     $scope.obj = [
       [{
