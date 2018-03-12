@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
+angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.select'])
 
 .controller('makeTripCtrl', ['$scope', 'CommonProp', '$location', '$firebaseArray', 'seatCalc', '$firebaseObject',
  function($scope, CommonProp, $location, $firebaseArray, seatCalc, $firebaseObject){
@@ -23,6 +23,14 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase'])
 
     var locationRef = firebase.database().ref().child('locations');
     $scope.locations = $firebaseArray(locationRef);
+
+    $scope.tagTransform = function(newTag){
+      console.log(newTag);
+      var item = {
+        name: newTag
+      };
+      return item;
+    }
 
     $scope.trip = {};
     var tripRef = firebase.database().ref().child('trips');

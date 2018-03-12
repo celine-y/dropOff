@@ -10,7 +10,8 @@
                     <a href="#" class="navbar-brand">dropOff</a>
                 </div>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#!/home">Home</a></li>
+                    <li><a href="#!/home">Home</a></li>
+                    <li ng-show="{{userType == 'driver'}}" class="active"><a href="#!/makeTrip">Create Trip</a></li>
                     <li ng-show="{{userType == 'driver'}}"><a href="#!/driver">Profile</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
@@ -59,6 +60,14 @@
                             ng-options="location.name as location.name for location in locations">
                             <option value="" disabled selected>Select Arrival</option>
                         </select>
+                    </div>
+                    <div class="col-md">
+                        <ui-select ng-model="trip.starting" tagging="tagTransform" tagging-label="false" theme="bootstrap">
+                            <ui-select-match>{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="location in locations | filter: $select.search">
+                                <div ng-bind-html="location.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
                 <div class="form-row">

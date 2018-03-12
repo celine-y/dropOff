@@ -11,6 +11,7 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#!/home">Home</a></li>
+                    <li ng-show="{{userType == 'driver'}}"><a href="#!/makeTrip">Create Trip</a></li>
                     <li ng-show="{{userType == 'driver'}}"><a href="#!/driver">Profile</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
