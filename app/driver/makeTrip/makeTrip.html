@@ -51,7 +51,7 @@
                         <label for="startLoc">Departure</label>
                         <ui-select id="startLoc" ng-model="trip.startLoc" tagging="tagTransform" tagging-label="false" 
                             required theme="bootstrap">
-                            <ui-select-match placeholder="Select Arrival Location or Type Your Own">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-match placeholder="Select Departure Location or Type Your Own">{{$select.selected.name}}</ui-select-match>
                             <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
                                 <div ng-bind-html="location.name | highlight: $select.search"></div>
                             </ui-select-choices>
