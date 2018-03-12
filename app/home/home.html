@@ -32,20 +32,22 @@
                 <form name="searchForm" class="col">
                     <div class="form-row">
                         <div class="col-sm-6 col-md-3">
-                            <select id="startLoc" class="form-control" ng-model="search.startLoc"
+                            <select id="startLoc" class="form-control" 
+                                ng-model="search.startLoc" required
                                 ng-options="location.name as location.name for location in locations">
                                 <option value="" disabled selected>Select Departure</option>
                             </select>
                         </div>
                         <div class="col-sm-6 col-md-3">
-                            <select id="startLoc" class="form-control" ng-model="search.endLoc"
+                            <select id="startLoc" class="form-control"
+                                ng-model="search.endLoc" required
                                 ng-options="location.name as location.name for location in locations">
                                 <option value="" disabled selected>Select Arrival</option>
                             </select>
                         </div>
                         <div class="col-sm col-md-3">
                             <input class="form-control" id="dateTime" ng-model="search.datetime" 
-                                datetime-picker future-only date-only 
+                                datetime-picker future-only date-only required
                                 date-format="MMM dd yyyy" placeholder="Select Date"/>
                         </div>
                         <div class="col-sm-5 col-md">
@@ -57,7 +59,8 @@
                             </div>
                         </div>
                         <div class="col-xs-1">
-                            <button type="submit" class="btn btn-primary" ng-click="searchTrip()">
+                            <button type="submit" class="btn btn-primary"
+                                ng-click="searchTrip()" ng-disabled="searchForm.$invalid">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
