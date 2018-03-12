@@ -34,6 +34,8 @@ angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 	} else {
 		var locationRef = firebase.database().ref().child('locations');
 		$scope.locations = $firebaseArray(locationRef);
+
+		$scope.search = {};
 	}
 
 	function getSeats(trip){
