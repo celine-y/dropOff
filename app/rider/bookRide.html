@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< HEAD
 <head>
     <title>dropOff | Book Ride</title>
 </head>
@@ -27,4 +28,38 @@
 
 </div>
 </body>
+=======
+    <head>
+        <title>dropOff | Home</title>
+    </head>
+    <body ng-controller="HomeCtrl">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand">dropOff</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#!/home">Home</a></li>
+                    <li ng-click="logout()"><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h3 class="text-center">Welcome, {{username}}</h3>
+        </div>
+
+        <div ng-show="{{userType == 'rider'}}" class="container">
+            <h3 class="text-center">Rider</h3>
+        </div>
+
+        <div ng-show="{{userType == 'driver'}}" class="container">
+            <h3 class="text-center">Upcoming Drives</h3>
+            <a class="btn btn-success" href="#!/makeTrip">Post New Trip</a>
+            <div class="container">
+                Upcoming drives display
+            </div>
+        </div>
+    </body>
+>>>>>>> bce379f4946b92392f2d318e80dce65dc4865c28
 </html>
