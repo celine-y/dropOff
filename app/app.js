@@ -8,7 +8,8 @@ angular.module('dropOff', [
   'dropOff.home',
   'dropOff.makeTrip',
   'dropOff.driver',
-  'dropOff.myRides'
+  'dropOff.myRides',
+  'dropOff.bookRide'
 ])
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
@@ -37,6 +38,9 @@ angular.module('dropOff', [
   .when('/myRides', {
     templateUrl: 'rider/myRides.html',
     controller: 'myRidesCtrl'
+  .when('/bookRide', {
+    templateUrl: 'rider/bookRide.html',
+    controller: 'bookRideCtrl'
   })
   .otherwise({redirectTo: '/login'});
 }]);
