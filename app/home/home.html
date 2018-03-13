@@ -13,6 +13,7 @@
                     <li class="active"><a href="#!/home">Home</a></li>
                     <li ng-show="{{userType == 'driver'}}"><a href="#!/makeTrip">Create Trip</a></li>
                     <li ng-show="{{userType == 'driver'}}"><a href="#!/driver">Profile</a></li>
+                    <li ng-show="{{userType == 'rider'}}"><a href="#!/myRides">My Rides</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
             </div>
@@ -32,28 +33,28 @@
             <div class="row">
                 <form name="searchForm" class="col-xs-12">
                     <div class="form-row">
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-xs-6 col-md-3">
                             <ui-select id="startLoc" ng-model="search.startLoc" required theme="bootstrap">
-                                <ui-select-match placeholder="Select Departure Location or Type Your Own">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-match placeholder="Select Departure Location">{{$select.selected.name}}</ui-select-match>
                                 <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
                                     <div ng-bind-html="location.name | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-xs-6 col-md-3">
                             <ui-select id="endLoc" ng-model="search.endLoc" required theme="bootstrap">
-                                <ui-select-match placeholder="Select Arrival Location or Type Your Own">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-match placeholder="Select Arrival Location">{{$select.selected.name}}</ui-select-match>
                                 <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
                                     <div ng-bind-html="location.name | highlight: $select.search"></div>
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <div class="col-sm col-md-3">
+                        <div class="col-xs-6 col-md-3">
                             <input class="form-control" id="dateTime" ng-model="search.datetime" 
                                 datetime-picker future-only date-only required
                                 date-format="MMM dd yyyy" placeholder="Select Date"/>
                         </div>
-                        <div class="col-sm-5 col-md">
+                        <div class="col-xs-5 col-md-2">
                             <div class="input-group">
                                 <span class="input-group-addon">$</span>
                                 <input class="form-control" type="number" ng-model="search.maxPrice" aria-label="amount" placeholder="Max Price">
