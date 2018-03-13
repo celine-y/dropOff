@@ -13,5 +13,9 @@ angular.module('dropOff.myRides', ['ngRoute', 'firebase'])
         }
 
         var uid = CommonProp.getUID();
+
+        $scope.logout = function(){
+            CommonProp.logoutUser();
+        };
     }
  ]);

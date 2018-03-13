@@ -134,6 +134,10 @@ angular.module('dropOff.makeTrip', ['ngRoute', 'firebase', 'ngSanitize', 'ui.sel
         }
       }
     }
+
+    $scope.logout = function(){
+      CommonProp.logoutUser();
+    };
 }])
   
 .service('seatCalc', function() {
