@@ -16,9 +16,10 @@
          </ul>
       </div>
    </nav>
+
    <div class="container">
-      <p>{{trip}}</p>
-   </div> 
+      <p>{{trip.seats}}</p>
+   </div>
 
    <div class="container">
       <h3>Book Ride Process</h3>
@@ -31,23 +32,45 @@
             <uib-tab index="1" heading="Step 1">
                <div class="well">
                   <h4>Trip Information</h4>
-                  {{ trip.datetime | date: 'MMM dd HH:mm' }}
-                  {{ trip.startLoc }} to {{ trip.endLoc }}
-                  ${{ trip.price }}
+                  Date/Time: {{ trip.datetime | date: 'MMM dd HH:mm' }}
+                  <br/>From: {{ trip.startLoc }}
+                  <br/>To: {{ trip.endLoc }}
+                  <br/>Price: ${{ trip.price }}
 
+                  <h4>Driver Information
+                     <span>
+                        <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
+                     </span>
+                  </h4>
+                  Model: {{driver.brand}}
+                  <br/>License: {{driver.license}}
                </div>
             </uib-tab>
 
             <!-- tab 2 Select Seat -->
             <uib-tab index="2" heading="Step 2">
                <div class="well"> 
-                  Some Tab Content
+                  <h4>Select My Seat</h4>
+                  <div id="selectSeat">
+                     <table class="table">
+                        <tbody class="table">
+                           <tr ng-repeat="row in seats">
+                              <td ng-repeat="item in row">
+                                 <a class="available" ng-disabled="isDisabled" 
+                                 ng-class="{'selected': item.isAvailable == true,'available': item.isAvailable == false, 'blocked': item.isSeat == false}" 
+                                 ng-click="clickSeat(item)">{{item.col}}</a>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div><!-- selectSeat -->
                </div>
             </uib-tab>
 
             <!-- tab 4 Payment -->
             <uib-tab index="3" heading="Step 3">
                <div class="well">
+                  <h4>Payment</h4>
                   <ng-form name="nestedForm">
                      <div class="form-group">
                         <input type="text" class="form-control" required ng-model="model.name"/>
