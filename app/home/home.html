@@ -72,7 +72,7 @@
             <div class="row container">
                 <div class="col-xs-12">
                     <div ng-repeat="(id, trip) in rTrips | orderBy:'datetime' " class="list-group">
-                        <a href="/bookTrip/{{trip.$id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <a href="#!/bookRides/{{trip.$id}}" class="list-group-item list-group-item-action flex-column align-items-start">
                             <div class="row">
                                 <div class="col-xs-6">
                                     <h4>{{ trip.datetime | date: 'MMM dd HH:mm' }}</h4>

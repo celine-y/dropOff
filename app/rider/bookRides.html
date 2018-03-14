@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>dropOff | My Rides</title>
+</head>
+<body ng-controller="bookRidesCtrl">
+   <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+         <div class="navbar-header">
+            <a href="#" class="navbar-brand">dropOff</a>
+         </div>
+         <ul class="nav navbar-nav">
+            <li><a href="#!/home">Home</a></li>
+            <li ng-show="{{userType == 'rider'}}"><a href="#!/myRides">My Rides</a></li>
+            <li ng-click="logout()"><a href="#">Logout</a></li>
+         </ul>
+      </div>
+   </nav>
+   <div class="container">
+      <p>{{trip}}</p>
+   </div> 
+
+   <div class="container">
+      <h3>Book Ride Process</h3>
+      <hr>
+
+      <form name="outerForm" class="tab-form-demo">
+         <uib-tabset active="activeForm">
+
+            <!-- tab 1 Trip info -->
+            <uib-tab index="1" heading="Step 1">
+               <div class="well">
+                  <h4>Trip Information</h4>
+                  {{ trip.datetime | date: 'MMM dd HH:mm' }}
+                  {{ trip.startLoc }} to {{ trip.endLoc }}
+                  ${{ trip.price }}
+
+               </div>
+            </uib-tab>
+
+            <!-- tab 2 Select Seat -->
+            <uib-tab index="2" heading="Step 2">
+               <div class="well"> 
+                  Some Tab Content
+               </div>
+            </uib-tab>
+
+            <!-- tab 4 Payment -->
+            <uib-tab index="3" heading="Step 3">
+               <div class="well">
+                  <ng-form name="nestedForm">
+                     <div class="form-group">
+                        <input type="text" class="form-control" required ng-model="model.name"/>
+                     </div>
+                  </ng-form>
+               </div>
+            </uib-tab>
+
+
+         </uib-tabset>
+      </form>
+   </div>
+
+</body>
+</html>
