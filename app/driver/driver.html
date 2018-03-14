@@ -33,29 +33,33 @@
             <div class="row">
                 <small class="col-xs-12 text-center">Info is automatically saved!</small>
             </div>
-            <form name="driverProfile" novalidate>
-                <div class="form-row">
-                    <div class="col-xs-12">
-                        <h4>Car Details</h4>
-                    </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <form name="driverProfile" novalidate>
+                        <div class="form-row">
+                            <div class="col-xs-12">
+                                <h4>Car Details</h4>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-xs-12">
+                                <label for="carBrand">Brand and Model</label>
+                                <input type="text" class="form-control" id="carBrand" ng-model="driver.brand" placeholder="Tesla Model X">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-xs-6">
+                                <label for="license">License Plate No.</label>
+                                <input type="text" class="form-control" id="license" ng-model="driver.license" placeholder="LICENSE">
+                            </div>
+                            <div class="col-xs-6">
+                                <label for="carColor">Colour of Car</label>
+                                <color-picker id="carColor" ng-model="driver.color" options="options"></color-picker>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-row">
-                    <div class="col-xs-12">
-                        <label for="carBrand">Brand and Model</label>
-                        <input type="text" class="form-control" id="carBrand" ng-model="driver.brand" placeholder="Tesla Model X">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-xs-6">
-                        <label for="license">License Plate No.</label>
-                        <input type="text" class="form-control" id="license" ng-model="driver.license" placeholder="LICENSE">
-                    </div>
-                    <div class="col-xs-6">
-                        <label for="carColor">Colour of Car</label>
-                        <color-picker id="carColor" ng-model="driver.color" options="options"></color-picker>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
         <div class="container">
             <h4 class="text-center">Example View</h4>
