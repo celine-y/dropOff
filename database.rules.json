@@ -1,0 +1,14 @@
+{
+  "rules": {
+    "users": {
+      "$user_id": {
+        ".write": "auth.uid === $user_id"
+      }
+    },
+    "trips": {
+      ".indexOn": "driver"
+    },
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
