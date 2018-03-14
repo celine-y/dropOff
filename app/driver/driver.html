@@ -28,25 +28,29 @@
 
         <div class="container">
             <div class="row">
-                <h3 class="col text-center">Update Your Profile</h3>
+                <h3 class="col-xs-12 text-center">Update Your Profile</h3>
             </div>
             <div class="row">
-                <small class="col text-center">Info is automatically saved!</small>
+                <small class="col-xs-12 text-center">Info is automatically saved!</small>
             </div>
             <form name="driverProfile" novalidate>
-                <h4>Car Details</h4>
                 <div class="form-row">
-                    <div class="col">
+                    <div class="col-xs-12">
+                        <h4>Car Details</h4>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-xs-12">
                         <label for="carBrand">Brand and Model</label>
                         <input type="text" class="form-control" id="carBrand" ng-model="driver.brand" placeholder="Tesla Model X">
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-6">
+                    <div class="col-xs-6">
                         <label for="license">License Plate No.</label>
                         <input type="text" class="form-control" id="license" ng-model="driver.license" placeholder="LICENSE">
                     </div>
-                    <div class="col-6">
+                    <div class="col-xs-6">
                         <label for="carColor">Colour of Car</label>
                         <color-picker id="carColor" ng-model="driver.color" options="options"></color-picker>
                     </div>
@@ -55,44 +59,48 @@
         </div>
         <div class="container">
             <h4 class="text-center">Example View</h4>
-            <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <h4>Dec 24 2020 23:59</h4>
-                        </div>
-                        <div class="col-xs-6 text-right">
-                            <small>Earth to Moon</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <span>
-                                <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
-                            </span>
-                            {{ driver.brand }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <div class="text-success">
-                                <h5 class="text-left">$25</h5>
+            <div class="row">
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h4>Dec 24 2020 23:59</h4>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <small>Earth to Moon</small>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <h6>Spots left: </h6>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <span>
+                                        <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
+                                    </span>
+                                    {{ driver.brand }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="text-success">
+                                        <h5 class="text-left">$25</h5>
                                     </div>
-                                    <div class="col-xs-6 text-right">
-                                        <span class="badge badge-primary badge-pill">3</span>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <h6>Spots left: </h6>
+                                            </div>
+                                            <div class="col-xs-6 text-right">
+                                                <span class="badge badge-primary badge-pill">3</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
     </body>
