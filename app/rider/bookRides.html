@@ -17,9 +17,9 @@
       </div>
    </nav>
 
-   <div class="container">
+<!--    <div class="container">
       <p>{{trip.seats}}</p>
-   </div>
+   </div> -->
 
    <div class="container">
       <h3>Book Ride Process</h3>
@@ -35,7 +35,7 @@
                   Date/Time: {{ trip.datetime | date: 'MMM dd HH:mm' }}
                   <br/>From: {{ trip.startLoc }}
                   <br/>To: {{ trip.endLoc }}
-                  <br/>Price: ${{ trip.price }}
+                  <br/>Price: ${{ trip.price }} /seat
 
                   <h4>Driver Information
                      <span>
@@ -50,7 +50,7 @@
             <!-- tab 2 Select Seat -->
             <uib-tab index="2" heading="Step 2">
                <div class="well"> 
-                  <h4>Select My Seat</h4>
+                  <h4>Select My Seat(s)</h4>
                   <div id="selectSeat">
                      <table class="table">
                         <tbody class="table">
@@ -70,12 +70,70 @@
             <!-- tab 4 Payment -->
             <uib-tab index="3" heading="Step 3">
                <div class="well">
-                  <h4>Payment</h4>
-                  <ng-form name="nestedForm">
-                     <div class="form-group">
-                        <input type="text" class="form-control" required ng-model="model.name"/>
+
+                  <form role="form" id="payment-form">
+                     <div class="row">
+                        <div class="col-xs-12 col-lg-6 col-lg-offset-3">
+                           <h4>Payment Details</h4><br/>
+                           <div class="form-group">
+                              <label for="cardNumber">CARD NUMBER</label>
+                              <div class="input-group">
+                                 <input 
+                                 type="tel"
+                                 class="form-control"
+                                 name="cardNumber"
+                                 placeholder="Valid Card Number"
+                                 autocomplete="cc-number"
+                                 required autofocus 
+                                 />
+                                 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                              </div>
+                           </div>                            
+                        </div>
                      </div>
-                  </ng-form>
+                     <div class="row">
+                        <div class="col-xs-7 col-md-7 col-lg-4 col-lg-offset-3">
+                           <div class="form-group">
+                              <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                              <input 
+                              type="tel" 
+                              class="form-control" 
+                              name="cardExpiry"
+                              placeholder="MM / YY"
+                              autocomplete="cc-exp"
+                              required 
+                              />
+                           </div>
+                        </div>
+                        <div class="col-xs-5 col-md-5 col-lg-2">
+                           <div class="form-group">
+                              <label for="cardCVC">CV CODE</label>
+                              <input 
+                              type="tel" 
+                              class="form-control"
+                              name="cardCVC"
+                              placeholder="CVC"
+                              autocomplete="cc-csc"
+                              required
+                              />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-xs-12 col-lg-6 col-lg-offset-3">
+                           <button class="btn btn-primary btn-lg btn-block" style="pointer-events: none;">
+                               Final Payment <span class="badge badge-light">$30</span>
+                            </button>
+                           <button class="btn btn-success btn-lg btn-block" type="submit">Book Ride</button>
+                        </div>
+                     </div>
+                     <div class="row" style="display:none;">
+                        <div class="col-xs-12">
+                           <p class="payment-errors"></p>
+                        </div>
+                     </div>
+                  </form>
+                  
                </div>
             </uib-tab>
 
