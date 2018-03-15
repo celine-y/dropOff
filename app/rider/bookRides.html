@@ -52,7 +52,7 @@
                <div class="well"> 
                   <h4>Select My Seat(s)</h4>
                   <div id="selectSeat">
-                     <table class="table">
+                     <table class="table" id="bookRideSeat">
                         <tbody class="table">
                            <tr ng-repeat="row in seats">
                               <td ng-repeat="item in row">
@@ -84,7 +84,7 @@
                                  name="cardNumber"
                                  placeholder="Valid Card Number"
                                  autocomplete="cc-number"
-                                 required autofocus 
+                                 autofocus 
                                  />
                                  <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
                               </div>
@@ -101,7 +101,6 @@
                               name="cardExpiry"
                               placeholder="MM / YY"
                               autocomplete="cc-exp"
-                              required 
                               />
                            </div>
                         </div>
@@ -114,7 +113,6 @@
                               name="cardCVC"
                               placeholder="CVC"
                               autocomplete="cc-csc"
-                              required
                               />
                            </div>
                         </div>
@@ -122,9 +120,9 @@
                      <div class="row">
                         <div class="col-xs-12 col-lg-6 col-lg-offset-3">
                            <button class="btn btn-primary btn-lg btn-block" style="pointer-events: none;">
-                               Final Payment <span class="badge badge-light">$30</span>
+                               Final Payment <span class="badge badge-light">$ {{getPrice()}}</span>
                             </button>
-                           <button class="btn btn-success btn-lg btn-block" type="submit">Book Ride</button>
+                           <button class="btn btn-success btn-lg btn-block" type="submit" ng-class="{'disabled': numSeats == 0}" ng-click="clickPay()">Book Ride</button>
                         </div>
                      </div>
                      <div class="row" style="display:none;">

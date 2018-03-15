@@ -6,26 +6,30 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 	function($scope, CommonProp, $location, $firebaseArray, $firebaseObject, $routeParams){
 		$scope.username = CommonProp.getUser();
 		$scope.userType = CommonProp.getPermission();
-		// $scope.success = false;
+		$scope.success = false;
 
 		var tripId = $routeParams.tripId;
 		var driverId = '';
+		//[{col: 1, row: 1}, {col: 2, row: 2}]
+		var selectedSeats = [];
 
 		//Trip Info
 		var fbRefTrip = firebase.database().ref().child('trips').child(tripId);
 		var trip = $firebaseObject(fbRefTrip);
 		$scope.trip = trip;
-		console.log($scope.trip);
+		console.log(trip);
 
 		//User Trips
 		$scope.userTrip = {};
-		var fbRefUserTrip = '';
+		var fbRefUserTrip = firebase.database().ref().child('userTrips');
+		$scope.userTrips = $firebaseArray(fbRefUserTrip); 
 
 		$scope.trip.$loaded().then(function(){
 			//Driver Info
 			driverId = $scope.trip.driver;
 			var fbRefDriver = firebase.database().ref().child('drivers').child(driverId);
 			var driver = $firebaseObject(fbRefDriver);
+			$scope.numSeats = 0;
 			$scope.driver = driver;
 			console.log($scope.driver);
 
@@ -33,8 +37,14 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 			//alter $scope.seat based on seat info
 			angular.forEach($scope.trip.seats, function(obj, idx){
 				var row = obj.row-1;
-				var col = obj.col-1;
-				var status = obj.isAvailable;
+				var col = obj.col-1;	
+				var status = false;
+
+				if (obj.takenBy){
+					status = false;
+				}else{
+					status = true;	
+				}
 
 				$scope.seats[row][col]["isSeat"] = status;
 			});
@@ -43,45 +53,82 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 				return "#"+$scope.driver.color;
 			};
 
-			$scope.clickSeat = function(seat){
-				if (seat.isSeat){
-					if (seat.isAvailable){
-						seat.isAvailable = false;
-					}else{
-						seat.isAvailable = true;
-					}					
-				}
+			$scope.getPrice = function(){
+				return $scope.trip.price * $scope.numSeats;
 			};
 
-			var animationsEnabled = true;
-
-			$scope.open = function (size, parentSelector) {
-				var parentElem = parentSelector ? 
-				angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
-				var modalInstance = $uibModal.open({
-					animation: animationsEnabled,
-					ariaLabelledBy: 'modal-title',
-					ariaDescribedBy: 'modal-body',
-					templateUrl: 'myModalContent.html',
-					controller: 'ModalInstanceCtrl',
-					controllerAs: '$scope',
-					size: size,
-					appendTo: parentElem,
-					resolve: {
-						items: function () {
-							// return $ctrl.items;
-						}
-					}
-				});
-
-				modalInstance.result.then(function (selectedItem) {
-					$ctrl.selected = selectedItem;
-				}, function () {
-					$log.info('Modal dismissed at: ' + new Date());
-				});
-			};
 
 		});
+
+		$scope.clickSeat = function(seat){
+			if (seat.isSeat){
+				if (seat.isAvailable){
+					seat.isAvailable = false;
+					$scope.numSeats--;
+					updateSelectedSeats('remove', seat.row, seat.col);
+				}else{
+					seat.isAvailable = true;
+					$scope.numSeats++;
+					updateSelectedSeats('add', seat.row, seat.col);
+				}					
+			}
+		};
+
+		$scope.clickPay = function(){
+			//add to userTrip
+			$scope.userTrip.userId = $scope.username;
+			$scope.userTrip.tripId = tripId;
+			$scope.userTrips.$add(
+				$scope.userTrip
+				).then(function(success){
+					showSuccess();
+				});
+
+			console.log(selectedSeats);
+			//update trip>takenBy>uid
+			//update takenBy where col=obj.col && row=obj.row
+			
+			angular.forEach(selectedSeats, function(obj, key){
+				var fbRefSeats = firebase.database().ref().child('trips').child(tripId).child("seats").orderByChild("row").equalTo(obj.row);
+				fbRefSeats.on('value', function(snapshot){
+					var colSeats = snapshot.val();
+					console.log(colSeats);
+					angular.forEach(colSeats, function(item, key){
+						if (item.col == obj.col){
+							// item.ref.update({takenBy: $scope.username});
+							item.ref.update($scope.username);
+						};						
+					})
+				})
+				
+				// var fbRefSeats = firebase.database().ref().child('trips').child(tripId).child("seats").orderByChild("row").equalTo(obj.row);
+				// var rowSeats = $firebaseObject(fbRefSeats);
+				// console.log(seat);
+			})
+			
+			
+		};
+
+		function showSuccess(){
+			$scope.success = true;
+			window.setTimeout(function(){
+				$scope.$apply(function(){
+					$scope.success = false;
+				});
+			}, 2000);
+		}
+
+		function updateSelectedSeats(action, row, col){
+			if (action == "add"){
+				selectedSeats.push({row: row, col: col});
+			}else{ //remove
+				angular.forEach(selectedSeats, function(obj,key){
+					if(obj.row == row && obj.col == col){
+						selectedSeats.splice(key,1);
+					}
+				});
+			}
+		}
 
 		$scope.seats = [
 		[{
