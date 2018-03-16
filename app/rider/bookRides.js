@@ -84,29 +84,17 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 					showSuccess();
 				});
 
-			console.log(selectedSeats);
-			//update trip>takenBy>uid
-			//update takenBy where col=obj.col && row=obj.row
-			
+			//add username to takenBy
 			angular.forEach(selectedSeats, function(obj, key){
 				var fbRefSeats = firebase.database().ref().child('trips').child(tripId).child("seats").orderByChild("row").equalTo(obj.row);
 				fbRefSeats.on('value', function(snapshot){
-					var colSeats = snapshot.val();
-					console.log(colSeats);
-					angular.forEach(colSeats, function(item, key){
-						if (item.col == obj.col){
-							// item.ref.update({takenBy: $scope.username});
-							item.ref.update($scope.username);
+					snapshot.forEach(function(item){
+						if (item.val().col == obj.col){
+							item.ref.update({takenBy: $scope.username});
 						};						
-					})
-				})
-				
-				// var fbRefSeats = firebase.database().ref().child('trips').child(tripId).child("seats").orderByChild("row").equalTo(obj.row);
-				// var rowSeats = $firebaseObject(fbRefSeats);
-				// console.log(seat);
-			})
-			
-			
+					});
+				});
+			});
 		};
 
 		function showSuccess(){

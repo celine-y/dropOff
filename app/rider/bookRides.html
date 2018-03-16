@@ -122,7 +122,7 @@
                            <button class="btn btn-primary btn-lg btn-block" style="pointer-events: none;">
                                Final Payment <span class="badge badge-light">$ {{getPrice()}}</span>
                             </button>
-                           <button class="btn btn-success btn-lg btn-block" type="submit" ng-class="{'disabled': numSeats == 0}" ng-click="clickPay()">Book Ride</button>
+                           <a class="btn btn-success btn-lg btn-block" type="submit" ng-class="{'disabled': numSeats == 0}" ng-click="clickPay()" href='/#!/myRides'>Book Ride</a>
                         </div>
                      </div>
                      <div class="row" style="display:none;">
