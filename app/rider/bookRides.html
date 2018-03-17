@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>dropOff | Book Rides</title>
+   <title>DropOff | Book Rides</title>
 </head>
 <body ng-controller="bookRidesCtrl">
    <nav class="navbar navbar-inverse">
@@ -28,7 +28,7 @@
             <uib-tab index="1" heading="Step 1">
                <div class="well">
                   <h3>Trip Information
-                     <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </h3>
                   {{ trip.datetime | date: 'MMM dd HH:mm' }}
                   <br/>{{ trip.startLoc }} to {{ trip.endLoc }}

@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>dropOff | Home</title>
-    </head>
-    <body ng-controller="HomeCtrl">
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a href="#" class="navbar-brand">dropOff</a>
-                </div>
+<head>
+    <title>dropOff | Home</title>
+</head>
+<body ng-controller="HomeCtrl">
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Drop<span class="glyphicon glyphicon-map-marker"></span>ff</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#!/home">Home</a></li>
                     <li ng-show="{{userType == 'driver'}}"><a href="#!/makeTrip">Create Trip</a></li>
@@ -16,145 +24,143 @@
                     <li ng-show="{{userType == 'rider'}}"><a href="#!/myRides">My Rides</a></li>
                     <li ng-click="logout()"><a href="#">Logout</a></li>
                 </ul>
+                <p class="navbar-text navbar-right">Welcome, {{username}}</p>
             </div>
-        </nav>
-
-        <div class="container">
-            <h5 class="text-right">Welcome, {{username}}</h5>
         </div>
+    </nav>
 
-        <!-- SHOW RIDER VIEW -->
-        <div ng-show="{{userType == 'rider'}}" class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h3 class="text-center">Search for a Ride</h3>
-                </div>
-            </div>            
-            <div class="row">
-                <form name="searchForm" class="col-xs-12">
-                    <div class="form-row">
-                        <div class="col-xs-6 col-md-3">
-                            <ui-select id="startLoc" ng-model="search.startLoc" required theme="bootstrap">
-                                <ui-select-match placeholder="Select Departure Location">{{$select.selected.name}}</ui-select-match>
-                                <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
-                                    <div ng-bind-html="location.name | highlight: $select.search"></div>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                        <div class="col-xs-6 col-md-3">
-                            <ui-select id="endLoc" ng-model="search.endLoc" required theme="bootstrap">
-                                <ui-select-match placeholder="Select Arrival Location">{{$select.selected.name}}</ui-select-match>
-                                <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
-                                    <div ng-bind-html="location.name | highlight: $select.search"></div>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                        <div class="col-xs-6 col-md-3">
-                            <input class="form-control" id="dateTime" ng-model="search.datetime" 
-                                datetime-picker future-only date-only required
-                                date-format="MMM dd yyyy" placeholder="Select Date"/>
-                        </div>
-                        <div class="col-xs-5 col-md-2">
-                            <div class="input-group">
-                                <span class="input-group-addon">$</span>
-                                <input class="form-control" type="number" ng-model="search.maxPrice" aria-label="amount" placeholder="Max Price">
-                            </div>
-                        </div>
-                        <div class="col-xs-1">
-                            <button type="submit" class="btn btn-primary"
-                                ng-click="searchTrip()" ng-disabled="searchForm.$invalid">
-                                Search <i class="fas fa-search"></i>
-                            </button>
+    <!-- SHOW RIDER VIEW -->
+    <div ng-show="{{userType == 'rider'}}" class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="text-center">Search for a Ride</h3>
+            </div>
+        </div>            
+        <div class="row">
+            <form name="searchForm" class="col-xs-12">
+                <div class="form-row">
+                    <div class="col-xs-6 col-md-3">
+                        <ui-select id="startLoc" ng-model="search.startLoc" required theme="bootstrap">
+                            <ui-select-match placeholder="Select Departure Location">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
+                                <div ng-bind-html="location.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <ui-select id="endLoc" ng-model="search.endLoc" required theme="bootstrap">
+                            <ui-select-match placeholder="Select Arrival Location">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="location.name as location in locations | filter: $select.search">
+                                <div ng-bind-html="location.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-xs-6 col-md-3">
+                        <input class="form-control" id="dateTime" ng-model="search.datetime" 
+                        datetime-picker future-only date-only required
+                        date-format="MMM dd yyyy" placeholder="Select Date"/>
+                    </div>
+                    <div class="col-xs-5 col-md-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input class="form-control" type="number" ng-model="search.maxPrice" aria-label="amount" placeholder="Max Price">
                         </div>
                     </div>
-                </form>
+                    <div class="col-xs-1">
+                        <button type="submit" class="btn btn-primary"
+                        ng-click="searchTrip()" ng-disabled="searchForm.$invalid">
+                        Search <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
-            <div class="row container">
-                <div class="col-xs-12">
-                    <div ng-repeat="(id, trip) in rTrips | orderBy:'datetime' " class="list-group">
-                        <a href="#!/bookRides/{{trip.$id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+        </form>
+    </div>
+    <div class="row container">
+        <div class="col-xs-12">
+            <div ng-repeat="(id, trip) in rTrips | orderBy:'datetime' " class="list-group">
+                <a href="#!/bookRides/{{trip.$id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h4>{{ trip.datetime | date: 'MMM dd HH:mm' }}</h4>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <small>{{ trip.startLoc }} to {{ trip.endLoc }}</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <span>
+                                <i class="fas fa-car fa-fw" ng-style="{'color': trip.driver.color}"></i>
+                            </span>
+                            {{ trip.driver.brand }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="text-success">
+                                <h5 class="text-left">${{ trip.price }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <h4>{{ trip.datetime | date: 'MMM dd HH:mm' }}</h4>
+                                    <h6>Spots left: </h6>
                                 </div>
                                 <div class="col-xs-6 text-right">
-                                    <small>{{ trip.startLoc }} to {{ trip.endLoc }}</small>
+                                    <span class="badge badge-primary badge-pill">{{ trip.seatsLeft }}</span>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <span>
-                                        <i class="fas fa-car fa-fw" ng-style="{'color': trip.driver.color}"></i>
-                                    </span>
-                                    {{ trip.driver.brand }}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="text-success">
-                                        <h5 class="text-left">${{ trip.price }}</h5>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <h6>Spots left: </h6>
-                                        </div>
-                                        <div class="col-xs-6 text-right">
-                                            <span class="badge badge-primary badge-pill">{{ trip.seatsLeft }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
-        <!-- END RIDER VIEW -->
+    </div>
+</div>
+<!-- END RIDER VIEW -->
 
-        <!-- SHow DRIVER VIEW -->
-        <div ng-show="{{userType == 'driver'}}" class="container">
-            <div class="container text-center">
-                <a class="btn btn-success" href="#!/makeTrip">Post New Trip</a>
-            </div>
-            <div class="container">
-                <h3 class="text-center">Upcoming Drives</h3>
-                <div ng-repeat="(id, trip) in dTrips | orderBy:'datetime' " class="list-group">
-                    <div class="list-group-item list-group-item-action">
-                        <div class="">
-                            <div class="row">
-                                <div class="col-xs-9">
-                                    <h3>{{ trip.startLoc }} to {{ trip.endLoc }}</h3>
-                                </div>
-                                <div class="col-xs-3 text-right">
-                                    <p>{{ trip.datetime | date: 'MMM dd HH:mm' }}</p>
+<!-- SHow DRIVER VIEW -->
+<div ng-show="{{userType == 'driver'}}" class="container">
+    <div class="container text-center">
+        <a class="btn btn-success" href="#!/makeTrip">Post New Trip</a>
+    </div>
+    <div class="container">
+        <h3 class="text-center">Upcoming Drives</h3>
+        <div ng-repeat="(id, trip) in dTrips | orderBy:'datetime' " class="list-group">
+            <div class="list-group-item list-group-item-action">
+                <div class="">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <h3>{{ trip.startLoc }} to {{ trip.endLoc }}</h3>
+                        </div>
+                        <div class="col-xs-3 text-right">
+                            <p>{{ trip.datetime | date: 'MMM dd HH:mm' }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="">
+                                <div class="row">
+                                    <div class="col-xs-9">
+                                        <h4>Spots Left: </h4>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <p class="align-bottom badge badge-primary badge-pill">{{ trip.seatsLeft }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="">
-                                    <div class="row">
-                                        <div class="col-xs-9">
-                                            <h4>Spots Left: </h4>
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <p class="align-bottom badge badge-primary badge-pill">{{ trip.seatsLeft }}</p>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="text-success">
-                                        <h3 class="text-right">${{ trip.price }}</h3>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="text-success">
+                                <h3 class="text-right">${{ trip.price }}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END DRIVER VIEW -->
-    </body>
+    </div>
+</div>
+<!-- END DRIVER VIEW -->
+</body>
 </html>
