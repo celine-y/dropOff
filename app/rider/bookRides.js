@@ -8,9 +8,13 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 		$scope.userType = CommonProp.getPermission();
 		$scope.success = false;
 
+        if(!$scope.username && $scope.userType != "rider"){
+            $location.path('/login');
+        }
+
+        var uid = CommonProp.getUID();
 		var tripId = $routeParams.tripId;
 		var driverId = '';
-		//[{col: 1, row: 1}, {col: 2, row: 2}]
 		var selectedSeats = [];
 
 		//Trip Info
@@ -76,7 +80,7 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 
 		$scope.clickPay = function(){
 			//add to userTrip
-			$scope.userTrip.userId = $scope.username;
+			$scope.userTrip.userId = uid;
 			$scope.userTrip.tripId = tripId;
 			$scope.userTrips.$add(
 				$scope.userTrip
@@ -90,7 +94,7 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 				fbRefSeats.on('value', function(snapshot){
 					snapshot.forEach(function(item){
 						if (item.val().col == obj.col){
-							item.ref.update({takenBy: $scope.username});
+							item.ref.update({takenBy: uid});
 						};						
 					});
 				});
@@ -118,38 +122,57 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 			}
 		}
 
+		$scope.logout = function(){
+            CommonProp.logoutUser();
+        };
+
 		$scope.seats = [
 		[{
 			col: 1,
 			row: 1,
 			isAvailable: false,
 			isSeat: false,
-			takenBy: false
-		}, {
+			takenBy: false,
+			span: 50,
+			align: "center",
+			name: "A"
+		},{
 			col: 2,
 			row: 1,
 			isAvailable: false,
 			isSeat: false,
-			takenBy: false
+			takenBy: false,
+			span: 50,
+			align: "left",
+			name: "B"
 		}],
 		[{
 			col: 1,
 			row: 2,
 			isAvailable: false,
 			isSeat: false,
-			takenBy: false
+			takenBy: false,
+			span: 33.33,
+			align: "left",
+			name: "C"
 		}, {
 			col: 2,
 			row: 2,
 			isAvailable: false,
 			isSeat: false,
-			takenBy: false
+			takenBy: false,
+			span: 33.33,
+			align: "left",
+			name: "D"
 		}, {
 			col: 3,
 			row: 2,
 			isAvailable: false,
 			isSeat: false,
-			takenBy: false
+			takenBy: false,
+			span: 33.33,
+			align: "left",
+			name: "E"
 		}]
 		];
 

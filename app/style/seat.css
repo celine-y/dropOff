@@ -17,7 +17,7 @@
   #selectSeat a.selected {
     background: blue;
     color: white;
-    border: 0;
+    border: 1px solid blue;
   }
   
   #selectSeat a.available {
@@ -43,6 +43,14 @@
     color: #aaa;
     box-shadow: 0;
     cursor: default;
-    border: 0;
+    border: 1px solid #eaeaea;
   }
   
+  .table{
+    width: 30% !important;
+    margin-top: 20px;
+  }
+
+  .table>tbody>tr>td{
+    border: none !important;
+  }
