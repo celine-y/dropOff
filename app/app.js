@@ -44,4 +44,11 @@ angular.module('dropOff', [
     controller: 'bookRidesCtrl'
   })
   .otherwise({redirectTo: '/login'});
-}]);
+}])
+
+.controller('appCtrl', function($scope) {
+      $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+        console.log(event, toState, toParams, fromState, fromParams);
+        $scope.state = toState;//do the checking
+      });
+});
