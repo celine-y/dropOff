@@ -22,6 +22,14 @@ angular.module('dropOff.login', ['ngRoute', 'firebase'])
 		});
 	}
 
+	$scope.setBackground = function (){
+		console.log("load background");
+		return {
+            'background-image':'url(style/bg4.jpg)'
+            // 'background-color': 'red'
+        }
+	}
+
 }])
 
 .factory('LoginFactory', ['$location', 'CommonProp', '$firebaseAuth', '$q', '$firebaseObject', function($location, CommonProp, $firebaseAuth, $q, $firebaseObject){

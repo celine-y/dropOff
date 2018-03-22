@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>DropOff | Book Rides</title>
+</head>
+<body ng-controller="bookRidesCtrl">
+
+   <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+         <div class="navbar-header">
+           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand">Drop<span class="glyphicon glyphicon-map-marker"></span>ff</a>
+         </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+             <ul class="nav navbar-nav">
+               <li><a href="#!/home">Home</a></li>
+               <li ng-show="{{userType == 'rider'}}"><a href="#!/myRides">My Rides</a></li>
+               <li ng-click="logout()"><a href="#">Logout</a></li>
+            </ul>
+            <p class="navbar-text navbar-right">Welcome, {{username}}</p>
+         </div>
+      </div>
+   </nav>
+
+<div class="container col-lg-8 col-lg-offset-2">
+   <h2>Book My Ride</h2>
+   <hr>
+
+   <form name="outerForm" class="tab-form-demo">
+      <uib-tabset active="activeForm">
+
+         <!-- tab 1 Trip info -->
+         <uib-tab index="1" heading="Step 1">
+            <div class="well">
+               <h3>Trip Information
+                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+               </h3>
+               {{ trip.datetime | date: 'MMM dd HH:mm' }}
+               <br/>{{ trip.startLoc }} to {{ trip.endLoc }}
+               <br/>${{ trip.price }}/seat
+
+               <h3>Driver
+                  <span>
+                     <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
+                  </span>
+               </h3>
+               Model: {{driver.brand}}
+               <br/>License: {{driver.license}}
+            </div>
+         </uib-tab>
+
+         <!-- tab 2 Select Seat -->
+         <uib-tab index="2" heading="Step 2">
+            <div class="well"> 
+               <h3>Select Seat</h3>
+               <div id="selectSeat">
+                  <table class="table" id="bookRideSeat">
+                     <tbody class="table">
+                        <tr ng-repeat="row in seats">
+                           <td ng-repeat="item in row" colspan="{{item.span}}" style="text-align:{{item.align}};">
+                              <a class="available" ng-disabled="isDisabled" 
+                              ng-class="{'selected': item.isAvailable == true,'available': item.isAvailable == false, 'blocked': item.isSeat == false}" 
+                              ng-click="clickSeat(item)">{{item.name}}</a>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div><!-- selectSeat -->
+            </div>
+         </uib-tab>
+
+         <!-- tab 4 Payment -->
+         <uib-tab index="3" heading="Step 3">
+            <div class="well">
+
+               <form role="form" id="payment-form">
+                  <div class="row">
+                     <div class="col-xs-12 col-lg-12">
+                        <h3>Payment Details</h3><br/>
+                        <div class="form-group">
+                           <label for="cardNumber">CARD NUMBER</label>
+                           <div class="input-group">
+                              <input 
+                              type="tel"
+                              class="form-control"
+                              name="cardNumber"
+                              placeholder="Valid Card Number"
+                              autocomplete="cc-number"
+                              autofocus 
+                              />
+                              <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                           </div>
+                        </div>                            
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-xs-7 col-md-7 col-lg-6">
+                        <div class="form-group">
+                           <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
+                           <input 
+                           type="tel" 
+                           class="form-control" 
+                           name="cardExpiry"
+                           placeholder="MM / YY"
+                           autocomplete="cc-exp"
+                           />
+                        </div>
+                     </div>
+                     <div class="col-xs-5 col-md-5 col-lg-6">
+                        <div class="form-group">
+                           <label for="cardCVC">CV CODE</label>
+                           <input 
+                           type="tel" 
+                           class="form-control"
+                           name="cardCVC"
+                           placeholder="CVC"
+                           autocomplete="cc-csc"
+                           />
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-xs-12 col-lg-6 col-lg-offset-3">
+                        <button class="btn btn-primary btn-lg btn-block" style="pointer-events: none;">
+                          Final Payment <span class="badge badge-light">$ {{getPrice()}}</span>
+                       </button>
+                       <a id="#bookRideButton" class="btn btn-success btn-lg btn-block" type="submit" ng-class="{'disabled': numSeats == 0}" ng-click="clickPay()" href='/#!/myRides'>Book Ride</a>
+                    </div>
+                 </div>
+                 <div class="row" style="display:none;">
+                  <div class="col-xs-12">
+                     <p class="payment-errors"></p>
+                  </div>
+               </div>
+            </form>
+
+         </div>
+      </uib-tab>
+
+
+   </uib-tabset>
+</form>
+</div>
+
+</body>
+</html>
