@@ -1,5 +1,14 @@
 .loginContainer{
-	background-color: #eaeaea;
+	background-color: rgba(226, 226, 226, 0.79);
 	padding: 40px;
-	margin-top: 100px;
+	margin-top: 130px;
+}
+
+body.loginBg{
+	background-image: url("bg4.jpg");
+	background-repeat: none;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }

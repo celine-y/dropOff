@@ -21,7 +21,6 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 		var fbRefTrip = firebase.database().ref().child('trips').child(tripId);
 		var trip = $firebaseObject(fbRefTrip);
 		$scope.trip = trip;
-		console.log(trip);
 
 		//User Trips
 		$scope.userTrip = {};
@@ -35,7 +34,6 @@ angular.module('dropOff.bookRides', ['ngRoute', 'firebase','ui.bootstrap'])
 			var driver = $firebaseObject(fbRefDriver);
 			$scope.numSeats = 0;
 			$scope.driver = driver;
-			console.log($scope.driver);
 
 			//Seat Info
 			//alter $scope.seat based on seat info
