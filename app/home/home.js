@@ -20,14 +20,13 @@ angular.module('dropOff.home', ['firebase', 'angularjs-datetime-picker'])
 		
 		$scope.trips.$loaded()
 		.then(function() {
-			$scope.dTrips = $scope.trips;
-			angular.forEach($scope.dTrips, function(trip, index){
-				// remove trips that are before today
+			$scope.dTrips = [];
+			angular.forEach($scope.trips, function(trip, index){
+				// add trips that are today or after
 				var tripdate = moment(trip.datetime);
-				if (tripdate < today){
-					$scope.dTrips.splice(index, 1);
-				} else {
+				if (tripdate >= today){
 					trip['seatsLeft'] = getSeats(trip);
+					$scope.dTrips.push(trip);
 				}
 			});
 		});
