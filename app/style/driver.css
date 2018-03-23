@@ -1,0 +1,22 @@
+.btn#newTrip{
+	margin-bottom: 20px;
+}
+
+.list-group h3,.list-group p{
+	display: inline;
+	margin-bottom: 0;
+	padding: 0;
+}
+
+.list-group-item{
+	padding: 25px 30px !important;
+}
+
+.list-group hr{
+	margin-top: 15px !important;
+	margin-bottom: 15px !important;
+}
+
+.form-row{
+	margin-bottom: 20px;
+}

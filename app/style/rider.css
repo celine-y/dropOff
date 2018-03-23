@@ -63,3 +63,7 @@ a.#buttonRideButton{
   padding-right: 45px;
   padding-bottom: 45px;
 }
+
+div.carDesc {
+  padding-top: 10px;
+}
