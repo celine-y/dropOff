@@ -37,27 +37,27 @@
          <!-- tab 1 Trip info -->
          <uib-tab index="1" heading="Step 1">
             <div class="well">
-               <h3>Trip Information
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-               </h3>
-               {{ trip.datetime | date: 'MMM dd HH:mm' }}
-               <br/>{{ trip.startLoc }} to {{ trip.endLoc }}
-               <br/>${{ trip.price }}/seat
+               <h3>Trip Information</h3>
+               <label>Date:</label> {{ trip.datetime | date: 'MMM dd HH:mm' }}
+               <br/><label>From:</label> {{ trip.startLoc }}
+               <br/><label>To:</label> {{ trip.endLoc }}
+               <br/><label>Price:</label> ${{ trip.price }}/seat
 
                <h3>Driver
                   <span>
                      <i class="fas fa-car fa-fw" ng-style="{'color': getColor()}"></i>
                   </span>
                </h3>
-               Model: {{driver.brand}}
-               <br/>License: {{driver.license}}
+               <label>Model:</label> {{driver.brand}}
+               <br/>
+               <label>License:</label> {{driver.license}}
             </div>
          </uib-tab>
 
          <!-- tab 2 Select Seat -->
          <uib-tab index="2" heading="Step 2">
             <div class="well"> 
-               <h3>Select Seat</h3>
+               <h3>Select Seat(s)</h3>
                <div id="selectSeat">
                   <table class="table" id="bookRideSeat">
                      <tbody class="table">
