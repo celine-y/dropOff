@@ -46,14 +46,13 @@ angular.module('dropOff', [
   .otherwise({redirectTo: '/login'});
 }])
 
-.controller('appCtrl', ['$scope',function($scope) {
-
+.controller('appCtrl', ['$scope','$route', '$location', function ($scope, $route, $location){
+    $scope.$on("$routeChangeSuccess", function (scope, next, current) {
+      if ($location.path() == "/register" || $location.path() == "/login"){
+        $scope.addClass = "bgImg";
+      }else{
+        $scope.addClass = "bgColor";
+      }
+    });
 }]);
-
-
-appCtrl.$inject = ['$transition$'];
-function appCtrl($transition$) {
-  var username = $transition$.params().username;
-  // .. do something with username
-}
 
